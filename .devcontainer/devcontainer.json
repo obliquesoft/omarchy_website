@@ -1,0 +1,9 @@
+{
+  "name": "omarchy_website",
+  "build": { "dockerfile": "Dockerfile" },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": { "label": "omarchy_website", "onAutoForward": "notify" }
+  },
+  "postCreateCommand": "bin/setup --skip-server"
+}
