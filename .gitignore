@@ -33,3 +33,6 @@
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
+
+# Public repo: even the encrypted credentials stay local.
+/config/credentials.yml.enc
