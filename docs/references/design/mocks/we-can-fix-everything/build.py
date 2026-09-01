@@ -13,7 +13,7 @@ VIEWS = os.path.join(ROOT, "app/views/homepage")
 
 def partial(name):
     text = open(os.path.join(VIEWS, f"_{name}.html.erb")).read()
-    return text.replace("/site/", "/public/site/")
+    return text
 
 
 SITE_CSS = ["reset", "root", "fonts", "elements", "button", "footer",
@@ -78,7 +78,7 @@ def section(key, direction):
 
 
 def build(key, direction):
-    css = "".join(f'    <link rel="stylesheet" href="/public/site/css/{name}.css">\n' for name in SITE_CSS)
+    css = "".join(f'    <link rel="stylesheet" href="/site/css/{name}.css">\n' for name in SITE_CSS)
     body = "\n".join(section(k, direction) for k in direction["body"])
     html = f'''<!doctype html>
 <html lang="en">
@@ -86,13 +86,13 @@ def build(key, direction):
     <title>Omarchy — Beautiful, Fun &amp; Agentic Linux by DHH</title>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, width=device-width">
-    <link rel="icon" href="/public/site/images/favicon.png">
-{css}    <link rel="stylesheet" href="/public/site/malleable/themes.css">
-    <link rel="stylesheet" href="/public/site/malleable/bar.css">
+    <link rel="icon" href="/site/images/favicon.png">
+{css}    <link rel="stylesheet" href="/site/malleable/themes.css">
+    <link rel="stylesheet" href="/site/malleable/bar.css">
     <link rel="stylesheet" href="./shared.css">
     <link rel="stylesheet" href="./{key}.css">
     <script src="./wordmark.js" type="module"></script>
-    <script src="/public/site/malleable/bar.js" type="module"></script>
+    <script src="/site/malleable/bar.js" type="module"></script>
     <script type="application/json" id="malleable-data">{{"generated": [], "submissions_closed": false}}</script>
   </head>
 

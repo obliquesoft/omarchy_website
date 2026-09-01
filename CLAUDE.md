@@ -38,8 +38,10 @@ values only — never raw CSS or markup from a model.
 - The malleable layer (bar, themes, scenery) is in `public/site/malleable/`.
 - Seed themes are static code + artwork. The database stores only
   generated themes (capped at 100, rate-limited per IP).
-- The original design mock this app grew from is preserved under
-  `docs/references/design/mocks/omarchy-malleable-homepage/`.
+- Design mocks live under `docs/references/design/mocks/` and open in the
+  running app (development only) at `/mocks/...` — for example
+  `/mocks/we-can-fix-everything/` lists the three redesign directions.
+  Rebuild those from the app's own partials with `python3 build.py`.
 
 ## Development loop
 

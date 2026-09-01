@@ -1,6 +1,9 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  # Design mocks under docs/ open in the browser at /mocks/... (development only).
+  config.middleware.use Rack::Static, urls: [ "/mocks" ], root: "docs/references/design"
+
   # Keyless fallback: fresh clones without credentials still boot and run.
   unless Rails.application.credentials.active_record_encryption.present?
     config.active_record.encryption.primary_key = "dev" * 11

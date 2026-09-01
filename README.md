@@ -20,7 +20,9 @@ bin/setup
 bin/rails server
 ```
 
-Or the containerized loop: `bin/up`. Theme generation needs an
+Or the containerized loop: `bin/up`. In development the design mocks under
+`docs/references/design/mocks/` open at `/mocks/...` (start with
+`/mocks/we-can-fix-everything/`). Theme generation needs an
 `ANTHROPIC_API_KEY` in the environment; without one, everything works
 except live generation. Tests: `bin/rails test`.
 

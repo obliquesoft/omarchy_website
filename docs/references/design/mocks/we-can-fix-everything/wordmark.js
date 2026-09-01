@@ -3,7 +3,7 @@
 // wordmark can be rebuilt from CSS-colored blocks — which means every theme
 // recolors the logo, and the intro can move the pixels around.
 
-const SVG_URL = '/public/site/images/brand/omarchy-wordmark.svg';
+const SVG_URL = '/site/images/brand/omarchy-wordmark.svg';
 const CELL_W = 51;
 const CELL_H = 50;
 
