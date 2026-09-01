@@ -1,0 +1,109 @@
+/* Direction C — Ticker.
+   Loud and full-bleed: the motto runs as a news ticker across the top and
+   again as a giant stacked headline, the wordmark letters slam in from
+   alternating sides with a CRT flicker, links become a chip row and the
+   videos a horizontal reel. */
+
+body {
+  background: var(--color-background-night);
+}
+
+.ticker {
+  background: var(--color-green);
+  color: var(--color-background-night);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  overflow: hidden;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ticker__track {
+  animation: ticker 40s linear infinite;
+  display: inline-block;
+  padding-block: 0.45em;
+}
+
+.ticker__track span {
+  padding-inline: 1.5em;
+}
+
+.ticker__track span::after {
+  content: "◆";
+  margin-left: 3em;
+}
+
+@keyframes ticker {
+  to { transform: translateX(-50%); }
+}
+
+.direction-c .pre--blocks {
+  margin-top: var(--space-x-large);
+  width: min(96em, 96vw);
+}
+
+.direction-c .motto {
+  margin-top: var(--space-large);
+  max-width: none;
+  text-align: center;
+}
+
+.direction-c .motto__line strong {
+  font-size: clamp(2.5em, 7vw, 6em);
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.direction-c .motto__line span {
+  color: var(--color-terminal-cyan);
+  display: block;
+  font-size: var(--font-size-medium);
+  margin-top: var(--space-small);
+}
+
+.direction-c .header {
+  margin-top: var(--space-xx-large);
+}
+
+.direction-c .nav__buttons {
+  gap: 0.6em;
+}
+
+.direction-c .nav__buttons .button {
+  border-radius: 999px;
+}
+
+/* Videos as a snap reel. */
+.direction-c .main {
+  margin-top: var(--space-xxx-large);
+  max-width: none;
+  padding-inline: var(--space-x-large);
+}
+
+.direction-c .video--grid {
+  grid-auto-columns: minmax(28em, 44vw);
+  grid-auto-flow: column;
+  grid-template-columns: none;
+  overflow-x: auto;
+  padding-bottom: var(--space-medium);
+  scroll-snap-type: x mandatory;
+}
+
+.direction-c .video--grid > * {
+  scroll-snap-align: start;
+}
+
+/* Scanlines, gently. */
+body::after {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.12) 0 1px,
+    transparent 1px 3px
+  );
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: 1;
+}

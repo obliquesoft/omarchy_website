@@ -1,0 +1,124 @@
+/* Direction B — Workbench.
+   A split layout on a blueprint grid: the bench on the left holds the
+   logo, the motto, the copy and a vertical rail of links; the reel on the
+   right is the videos. The maze mark assembles from four corners. */
+
+body {
+  background-color: var(--color-background-night);
+  background-image:
+    linear-gradient(rgb(var(--rgb-terminal-black) / 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--rgb-terminal-black) / 0.35) 1px, transparent 1px);
+  background-size: 2em 2em;
+}
+
+.workbench {
+  display: grid;
+  gap: var(--space-xx-large);
+  grid-template-columns: minmax(20em, 30em) minmax(0, 1fr);
+  margin: var(--space-x-large) auto 0;
+  max-width: 96em;
+  padding-inline: var(--space-x-large);
+}
+
+@media (max-width: 64em) {
+  .workbench { grid-template-columns: 1fr; }
+}
+
+.workbench__bench {
+  align-self: start;
+  position: sticky;
+  top: var(--space-large);
+}
+
+.direction-b .pre--blocks {
+  margin: 0;
+  width: 100%;
+}
+
+.direction-b .pre--blocks a {
+  border: var(--border-width) solid var(--border-color);
+  background: rgb(var(--rgb-background-storm) / 0.7);
+  padding: var(--space-large);
+}
+
+/* The mark: four copies, each clipped to a corner, sliding home. */
+.mark {
+  aspect-ratio: 1;
+  color: var(--color-green);
+  margin: 0 auto var(--space-large);
+  position: relative;
+  width: 9em;
+}
+
+.mark svg {
+  animation: mark-home 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  height: 100%;
+  inset: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.mark svg:nth-child(1) { clip-path: inset(0 50% 50% 0); --dx: -60%; --dy: -60%; animation-delay: 0.1s; }
+.mark svg:nth-child(2) { clip-path: inset(0 0 50% 50%); --dx: 60%; --dy: -60%; animation-delay: 0.3s; }
+.mark svg:nth-child(3) { clip-path: inset(50% 50% 0 0); --dx: -60%; --dy: 60%; animation-delay: 0.5s; }
+.mark svg:nth-child(4) { clip-path: inset(50% 0 0 50%); --dx: 60%; --dy: 60%; animation-delay: 0.7s; }
+
+@keyframes mark-home {
+  from { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(-6deg); }
+  to { opacity: 1; transform: none; }
+}
+
+.direction-b .wm-piece--rise { animation-delay: calc(var(--delay) + 1s); }
+
+.direction-b .motto {
+  margin: var(--space-x-large) 0 0;
+  max-width: none;
+  padding: 0;
+  text-align: left;
+}
+
+.direction-b .motto__line strong {
+  font-size: 260%;
+}
+
+.direction-b .header {
+  margin-top: var(--space-x-large);
+  text-align: left;
+}
+
+.direction-b .header h1,
+.direction-b .header__subtext {
+  margin-inline: 0;
+  max-width: none;
+  text-align: left;
+}
+
+.direction-b .nav {
+  margin-top: var(--space-large);
+}
+
+.direction-b .nav__buttons {
+  display: grid;
+  gap: var(--space-small);
+  grid-template-columns: 1fr 1fr;
+  justify-content: start;
+}
+
+.direction-b .nav__buttons .button {
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.direction-b .main {
+  margin: 0;
+  max-width: none;
+  padding: 0;
+}
+
+.direction-b .video--grid {
+  grid-template-columns: 1fr;
+}
+
+.direction-b .footer {
+  margin-top: var(--space-xxx-large);
+}

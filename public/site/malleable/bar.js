@@ -11,9 +11,9 @@ const LOADER_TEXT = 'loading malleable homepage';
 const THEMES = [
   {
     id: 'default',
-    name: 'Tokyo Night',
-    nod: 'the factory default',
-    submitter: { label: 'the mothership', url: 'https://omarchy.org' },
+    name: 'We can fix everything',
+    nod: 'every missing app, every incompatibility, every paper cut',
+    submitter: { label: '@leemcalilly', url: 'https://github.com/leemcalilly' },
   },
   {
     id: 'radiant-baby',

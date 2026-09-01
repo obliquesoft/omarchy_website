@@ -1,0 +1,60 @@
+/* Direction A — Blockfall.
+   Terminal-dark, centered, the wordmark assembles from falling blocks and
+   the motto types itself underneath. The quietest of the three; the
+   intro is the show. */
+
+body {
+  background:
+    radial-gradient(ellipse at 50% -10%, rgb(var(--rgb-green) / 0.12), transparent 55%),
+    var(--color-background-night);
+}
+
+.pre--blocks {
+  margin-top: var(--space-xx-large);
+  width: min(64em, 92vw);
+}
+
+/* A faint floor line the pieces land on. */
+.pre--blocks a {
+  border-bottom: var(--border-width) solid rgb(var(--rgb-green) / 0.35);
+  padding-bottom: var(--space-medium);
+}
+
+.direction-a .motto__line strong {
+  font-size: clamp(1.4em, 3.6vw, 3.8em);
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 0.08em solid var(--color-green);
+  margin-inline: auto;
+  width: 0;
+}
+
+.intro-done .motto__line strong {
+  animation: motto-type 1.4s steps(22) 0.2s forwards, motto-cursor 0.9s step-end 1.6s infinite;
+}
+
+@keyframes motto-type {
+  to { width: 22ch; }
+}
+
+@keyframes motto-cursor {
+  50% { border-color: transparent; }
+}
+
+.direction-a .motto__line span {
+  color: var(--color-terminal-blue);
+  display: block;
+  font-size: var(--font-size-medium);
+  opacity: 0;
+  transition: opacity 0.5s ease 1.7s;
+}
+
+.intro-done .motto__line span { opacity: 1; }
+
+.direction-a .header {
+  margin-top: var(--space-xx-large);
+}
+
+.direction-a .main {
+  margin-top: var(--space-xxx-large);
+}

@@ -1,0 +1,121 @@
+/* Shared by all three directions: the block wordmark, the motto, the intros.
+   Every color is a site custom property, so the malleable bar's themes
+   recolor these layouts exactly like they recolor the current site. */
+
+.pre--blocks {
+  display: block;
+  margin: 0 auto;
+  width: min(60em, 92vw);
+}
+
+.pre--blocks a {
+  color: var(--color-green);
+  display: block;
+  text-decoration: none;
+}
+
+.wordmark {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.wm-piece {
+  background: currentColor;
+  display: block;
+  position: absolute;
+}
+
+.wm-letter {
+  display: block;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+
+/* Blockfall: tetris pieces drop in from above, bottom rows first. */
+.wm-piece--fall {
+  animation: wm-fall 0.6s cubic-bezier(0.3, 0.9, 0.35, 1) var(--delay) both;
+}
+
+@keyframes wm-fall {
+  0% { opacity: 0.85; transform: translateY(calc(-1 * var(--drop))); }
+  85% { opacity: 1; transform: translateY(0.12em); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Rise: a quiet etch, rows lighting from the bottom. */
+.wm-piece--rise {
+  animation: wm-rise 0.45s ease-out var(--delay) both;
+}
+
+@keyframes wm-rise {
+  from { opacity: 0; transform: scaleY(0.2); }
+  to { opacity: 1; transform: scaleY(1); }
+}
+
+/* Slide: letters arrive from alternating sides with a CRT flicker. */
+.wm-letter {
+  animation: wm-slide 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay) both,
+    wm-flicker 0.9s steps(2) var(--delay) both;
+}
+
+@keyframes wm-slide {
+  from { transform: translateX(var(--from)); }
+  to { transform: translateX(0); }
+}
+
+@keyframes wm-flicker {
+  0%, 30%, 60% { opacity: 0.2; }
+  15%, 45%, 100% { opacity: 1; }
+}
+
+/* The motto: same sentence as wecanfixeverything.com, first clause huge. */
+.motto {
+  margin: var(--space-x-large) auto 0;
+  max-width: 40em;
+  padding-inline: var(--space-medium);
+  text-align: center;
+}
+
+.motto__line {
+  color: var(--color-terminal-white);
+  font-style: italic;
+  line-height: var(--line-height);
+}
+
+.motto__line strong {
+  color: var(--color-green);
+  display: block;
+  font-size: 300%;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: var(--space-medium);
+  text-wrap: balance;
+}
+
+/* Everything after the logo waits for the intro to land. */
+.motto,
+.header,
+.nav {
+  opacity: 0;
+  transform: translateY(0.5em);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.intro-done .motto,
+.intro-done .header,
+.intro-done .nav {
+  opacity: 1;
+  transform: none;
+}
+
+.intro-done .header { transition-delay: 0.25s; }
+.intro-done .nav { transition-delay: 0.45s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-piece, .wm-letter { animation: none !important; }
+  .motto, .header, .nav { opacity: 1; transform: none; transition: none; }
+}
