@@ -5,7 +5,7 @@
 // describe a new theme in a sentence. Dismiss the bar and clicking the ASCII
 // mark brings it back. The copy never changes; only the clothes do.
 
-const DISSOLVE_DELAY_MS = 5000;
+const DISSOLVE_DELAY_MS = 6500;
 const LOADER_TEXT = 'loading malleable homepage';
 
 const THEMES = [
@@ -98,6 +98,12 @@ const THEMES = [
     name: "Nantahala '83",
     nod: "paddling patton's run",
     submitter: { label: '@eddy_out', url: '#' },
+  },
+  {
+    id: 'tetris-84',
+    name: "Tetris '84",
+    nod: 'the long piece is coming, promise',
+    submitter: { label: '@electronika_60', url: '#' },
   },
 ];
 
@@ -645,6 +651,10 @@ const SCENERY = {
       </svg>
     </span>`,
 
+  'tetris-84': `
+    <span class="msc msc--tetris-board" style="left:3vw; top:8vh; width:10em;"><canvas class="msc--tetris" data-seed="1"></canvas></span>
+    <span class="msc msc--tetris-board" style="right:3vw; top:8vh; width:10em;"><canvas class="msc--tetris" data-seed="2"></canvas></span>`,
+
   generated: `
     <span class="msc msc--bob" style="left:5vw; top:10vh; width:3em;"><svg viewBox="0 0 40 40"><rect x="4" y="4" width="32" height="32" fill="var(--color-terminal-cyan)" opacity="0.7"/></svg></span>
     <span class="msc msc--bob-late" style="right:6vw; top:12vh; width:2.5em;"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="var(--color-green)" opacity="0.7"/></svg></span>
@@ -793,7 +803,9 @@ async function dissolve() {
   await typeLoader(`${LOADER_TEXT}...`);
   await wait(700);
   hideLoader();
-  applyTheme(randomTheme());
+  // The first change of clothes is always Tetris — the wordmark just fell into
+  // place, so the game keeps going. After that, the shuffle is random.
+  applyTheme(THEMES.find((theme) => theme.id === 'tetris-84') ?? randomTheme());
   openBar();
 }
 
@@ -1061,4 +1073,248 @@ document.addEventListener('DOMContentLoaded', () => {
       if (theme) applyTheme(theme);
     },
   };
+});
+
+
+// --- a game of tetris that plays itself ------------------------------------
+// Scenery for the Tetris theme: each canvas in the gutters runs its own
+// board with a small placement heuristic (low stack, few holes, clear
+// lines). Boards start when the theme's scenery is injected and stop when
+// it is replaced, watched through a MutationObserver so the renderer needs
+// no special case.
+
+const TETRIS_SHAPES = {
+  I: { cells: [[1, 1, 1, 1]], color: '#4fd1e6' },
+  O: { cells: [[1, 1], [1, 1]], color: '#f2d13d' },
+  T: { cells: [[0, 1, 0], [1, 1, 1]], color: '#b06be6' },
+  S: { cells: [[0, 1, 1], [1, 1, 0]], color: '#5fd36b' },
+  Z: { cells: [[1, 1, 0], [0, 1, 1]], color: '#ef5b5b' },
+  J: { cells: [[1, 0, 0], [1, 1, 1]], color: '#4f7be6' },
+  L: { cells: [[0, 0, 1], [1, 1, 1]], color: '#ef9b3f' },
+};
+
+function rotate(cells) {
+  const rows = cells.length;
+  const cols = cells[0].length;
+  const out = Array.from({ length: cols }, () => Array(rows).fill(0));
+  for (let r = 0; r < rows; r += 1) {
+    for (let c = 0; c < cols; c += 1) out[c][rows - 1 - r] = cells[r][c];
+  }
+  return out;
+}
+
+class TetrisBoard {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.cols = 10;
+    this.rows = 20;
+    this.grid = Array.from({ length: this.rows }, () => Array(this.cols).fill(null));
+    this.piece = null;
+    this.flash = [];
+    this.tick = 0;
+    this.stepMs = 95;
+    this.running = false;
+    this.last = 0;
+    this.resize();
+  }
+
+  resize() {
+    const width = this.canvas.clientWidth || 160;
+    const unit = width / this.cols;
+    const ratio = window.devicePixelRatio || 1;
+    this.unit = unit;
+    this.canvas.width = Math.round(width * ratio);
+    this.canvas.height = Math.round(unit * this.rows * ratio);
+    this.canvas.style.height = `${unit * this.rows}px`;
+    this.ctx = this.canvas.getContext('2d');
+    this.ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  }
+
+  fits(cells, row, col) {
+    for (let r = 0; r < cells.length; r += 1) {
+      for (let c = 0; c < cells[r].length; c += 1) {
+        if (!cells[r][c]) continue;
+        const y = row + r;
+        const x = col + c;
+        if (x < 0 || x >= this.cols || y >= this.rows) return false;
+        if (y >= 0 && this.grid[y][x]) return false;
+      }
+    }
+    return true;
+  }
+
+  landingRow(cells, col) {
+    let row = -cells.length;
+    while (this.fits(cells, row + 1, col)) row += 1;
+    return row;
+  }
+
+  // Score a candidate placement: penalize height and holes, reward lines.
+  evaluate(cells, row, col) {
+    const grid = this.grid.map((line) => line.slice());
+    for (let r = 0; r < cells.length; r += 1) {
+      for (let c = 0; c < cells[r].length; c += 1) {
+        if (cells[r][c] && row + r >= 0) grid[row + r][col + c] = 'x';
+      }
+    }
+    let lines = 0;
+    for (const line of grid) if (line.every(Boolean)) lines += 1;
+    let heights = 0;
+    let holes = 0;
+    let bumps = 0;
+    let previous = null;
+    for (let x = 0; x < this.cols; x += 1) {
+      let top = this.rows;
+      for (let y = 0; y < this.rows; y += 1) {
+        if (grid[y][x]) { top = y; break; }
+      }
+      const height = this.rows - top;
+      heights += height;
+      for (let y = top + 1; y < this.rows; y += 1) if (!grid[y][x]) holes += 1;
+      if (previous !== null) bumps += Math.abs(previous - height);
+      previous = height;
+    }
+    return lines * 6 - heights * 0.5 - holes * 3 - bumps * 0.3;
+  }
+
+  spawn() {
+    const keys = Object.keys(TETRIS_SHAPES);
+    const shape = TETRIS_SHAPES[keys[Math.floor(Math.random() * keys.length)]];
+    let best = null;
+    let cells = shape.cells;
+    for (let turn = 0; turn < 4; turn += 1) {
+      for (let col = -2; col < this.cols; col += 1) {
+        if (!this.fits(cells, -cells.length, col) && !this.fits(cells, 0, col)) continue;
+        const row = this.landingRow(cells, col);
+        if (row < -cells.length + 1 && !this.fits(cells, row, col)) continue;
+        const score = this.evaluate(cells, row, col) + Math.random() * 0.4;
+        if (!best || score > best.score) best = { cells, col, score };
+      }
+      cells = rotate(cells);
+    }
+    if (!best) return false;
+    this.piece = { cells: best.cells, color: shape.color, col: best.col, row: -best.cells.length };
+    return this.fits(this.piece.cells, this.piece.row + 1, this.piece.col);
+  }
+
+  lock() {
+    const { cells, color, row, col } = this.piece;
+    for (let r = 0; r < cells.length; r += 1) {
+      for (let c = 0; c < cells[r].length; c += 1) {
+        if (cells[r][c] && row + r >= 0) this.grid[row + r][col + c] = color;
+      }
+    }
+    this.piece = null;
+    this.flash = this.grid.map((line, y) => (line.every(Boolean) ? y : -1)).filter((y) => y >= 0);
+    if (this.flash.length) this.flashUntil = this.tick + 3;
+  }
+
+  clearLines() {
+    for (const y of this.flash) {
+      this.grid.splice(y, 1);
+      this.grid.unshift(Array(this.cols).fill(null));
+    }
+    this.flash = [];
+  }
+
+  step() {
+    this.tick += 1;
+    if (this.flash.length) {
+      if (this.tick >= this.flashUntil) this.clearLines();
+      return;
+    }
+    if (!this.piece) {
+      if (!this.spawn()) this.grid = this.grid.map(() => Array(this.cols).fill(null));
+      return;
+    }
+    if (this.fits(this.piece.cells, this.piece.row + 1, this.piece.col)) {
+      this.piece.row += 1;
+    } else {
+      this.lock();
+    }
+  }
+
+  cell(x, y, color) {
+    const u = this.unit;
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(x * u + 1, y * u + 1, u - 2, u - 2);
+    this.ctx.fillStyle = 'rgba(255,255,255,0.22)';
+    this.ctx.fillRect(x * u + 1, y * u + 1, u - 2, Math.max(1, u * 0.18));
+  }
+
+  draw() {
+    const { ctx, unit } = this;
+    ctx.clearRect(0, 0, this.cols * unit, this.rows * unit);
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    for (let x = 0; x <= this.cols; x += 1) {
+      ctx.beginPath(); ctx.moveTo(x * unit, 0); ctx.lineTo(x * unit, this.rows * unit); ctx.stroke();
+    }
+    for (let y = 0; y <= this.rows; y += 1) {
+      ctx.beginPath(); ctx.moveTo(0, y * unit); ctx.lineTo(this.cols * unit, y * unit); ctx.stroke();
+    }
+    this.grid.forEach((line, y) => line.forEach((color, x) => {
+      if (color) this.cell(x, y, this.flash.includes(y) ? '#ffffff' : color);
+    }));
+    if (this.piece) {
+      const { cells, color, row, col } = this.piece;
+      cells.forEach((line, r) => line.forEach((on, c) => {
+        if (on && row + r >= 0) this.cell(col + c, row + r, color);
+      }));
+    }
+  }
+
+  frame(now) {
+    if (!this.running) return;
+    if (now - this.last >= this.stepMs) {
+      this.last = now;
+      this.step();
+      this.draw();
+    }
+    requestAnimationFrame((next) => this.frame(next));
+  }
+
+  start() {
+    this.running = true;
+    this.draw();
+    requestAnimationFrame((now) => this.frame(now));
+  }
+
+  stop() {
+    this.running = false;
+  }
+}
+
+const tetrisBoards = new Map();
+
+function syncTetris() {
+  for (const [canvas, board] of tetrisBoards) {
+    if (!canvas.isConnected) {
+      board.stop();
+      tetrisBoards.delete(canvas);
+    }
+  }
+  if (prefersReducedMotion()) return;
+  for (const canvas of document.querySelectorAll('canvas.msc--tetris')) {
+    if (tetrisBoards.has(canvas)) continue;
+    const board = new TetrisBoard(canvas);
+    tetrisBoards.set(canvas, board);
+    board.start();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const observer = new MutationObserver(syncTetris);
+  const start = () => {
+    const holder = document.querySelector('.malleable-scenery');
+    if (holder) {
+      observer.observe(holder, { childList: true });
+      syncTetris();
+    } else {
+      window.setTimeout(start, 50);
+    }
+  };
+  start();
+  window.addEventListener('resize', () => {
+    for (const board of tetrisBoards.values()) { board.resize(); board.draw(); }
+  });
 });

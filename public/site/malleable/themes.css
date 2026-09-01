@@ -686,3 +686,30 @@ html[data-theme="nantahala-83"] body {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-0.18em); }
 }
+
+
+/* ------------------------------------------------------------------ */
+/* Tetris '84 — the long piece is coming, promise                     */
+/* Two boards play themselves in the gutters; the wordmark is blocks.  */
+
+html[data-theme="tetris-84"] {
+  --rgb-background-night: 14, 18, 40;
+  --rgb-background-storm: 26, 32, 66;
+  --rgb-terminal-black: 70, 80, 140;
+  --rgb-terminal-blue: 190, 205, 255;
+  --rgb-terminal-cyan: 242, 209, 61;
+  --rgb-terminal-white: 220, 228, 255;
+  --rgb-green: 79, 209, 230;
+  --rgb-turquoise: 239, 91, 91;
+}
+
+.msc--tetris-board {
+  background: rgb(0 0 0 / 0.3);
+  border: 2px solid rgb(var(--rgb-terminal-black));
+  box-shadow: 0 0 2em rgb(var(--rgb-green) / 0.15);
+}
+
+.msc--tetris-board canvas {
+  display: block;
+  width: 100%;
+}

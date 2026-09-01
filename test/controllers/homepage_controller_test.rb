@@ -11,6 +11,14 @@ class HomepageControllerTest < ActionDispatch::IntegrationTest
     assert_match "Omarchy is a pending trademark", response.body
   end
 
+  test "the homepage leads with the motto and the block wordmark" do
+    get root_path
+    assert_match "<strong>We can fix everything:</strong>", response.body
+    assert_match "every missing app, every incompatibility, every paper cut.", response.body
+    assert_match 'class="wordmark" data-intro="fall"', response.body
+    assert_no_match(/wte-home/, response.body)
+  end
+
   test "the homepage embeds the malleable data with seed and generated themes" do
     Theme.create!(
       name: "Neon Harbor '84", nod: "wet", description: "a harbor",
