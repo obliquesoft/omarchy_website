@@ -1,0 +1,273 @@
+/* The malleable bar and its friends. Everything is styled from the site's own
+   custom properties, so the bar re-skins itself with every theme. All of this
+   markup is injected by malleable.js — index.html's body stays identical to the
+   live site. */
+
+
+/* The bar pushes the page down instead of covering the notification link. */
+
+html.malleable-bar-open body {
+  padding-top: var(--malleable-bar-height, 3.4em);
+}
+
+.malleable-bar {
+  align-items: center;
+  background: rgba(var(--rgb-background-storm), 0.97);
+  border-bottom: var(--border-width) solid var(--border-color);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: var(--font-size);
+  gap: 0.5em 1.25em;
+  justify-content: center;
+  left: 0;
+  padding: 0.55em 1em;
+  position: fixed;
+  right: 0;
+  top: 0;
+  transform: translateY(-105%);
+  transition: transform 0.45s cubic-bezier(0.33, 1, 0.68, 1);
+  z-index: 50;
+}
+
+html.malleable-bar-open .malleable-bar {
+  transform: translateY(0);
+}
+
+.malleable-bar__brand {
+  align-items: center;
+  color: var(--color-green);
+  display: flex;
+  gap: 0.6em;
+}
+
+.malleable-bar__brand svg {
+  display: block;
+  height: 1.3em;
+  width: 1.3em;
+}
+
+.malleable-bar__title {
+  color: var(--color-terminal-white);
+  font-weight: 700;
+}
+
+/* The motto, set as the diff it deserves to be. */
+.malleable-bar__motto del {
+  color: rgba(var(--rgb-terminal-white), 0.45);
+  text-decoration: line-through;
+  text-decoration-thickness: 0.07em;
+}
+
+.malleable-bar__motto ins {
+  color: var(--color-green);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.malleable-bar__theme {
+  color: var(--color-terminal-blue);
+  text-align: center;
+}
+
+.malleable-bar__theme .malleable-bar__name {
+  color: var(--color-terminal-cyan);
+  font-weight: 700;
+}
+
+.malleable-bar__theme .malleable-bar__nod {
+  font-style: italic;
+  opacity: 0.75;
+}
+
+.malleable-bar__theme a {
+  color: var(--color-terminal-cyan);
+}
+
+.malleable-bar__actions {
+  align-items: center;
+  display: flex;
+  flex-basis: 100%;
+  gap: 0.5em;
+  justify-content: center;
+}
+
+.malleable-bar__button {
+  background: var(--color-terminal-blue);
+  border: none;
+  border-radius: 0.35em;
+  color: var(--color-background-night);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.55em 0.8em;
+  text-transform: uppercase;
+  transition: background var(--transition), color var(--transition);
+}
+
+.malleable-bar__button:hover {
+  background: var(--color-turquoise);
+}
+
+.malleable-bar__button--quiet {
+  background: transparent;
+  border: var(--border-width) solid var(--border-color);
+  color: var(--color-terminal-blue);
+}
+
+.malleable-bar__button--quiet:hover {
+  background: transparent;
+  color: var(--color-white);
+}
+
+.malleable-bar__close {
+  background: transparent;
+  border: none;
+  color: rgba(var(--rgb-terminal-white), 0.6);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1em;
+  line-height: 1;
+  padding: 0.4em;
+  transition: color var(--transition);
+}
+
+.malleable-bar__close:hover {
+  color: var(--color-white);
+}
+
+
+/* "loading malleable homepage..." — the little terminal chip that announces
+   the first dissolve, and stands in for the model while a theme builds. */
+
+.malleable-loader {
+  background: rgba(var(--rgb-background-storm), 0.97);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: 0.4em;
+  box-shadow: 0 0.8em 2.4em -0.8em rgba(var(--rgb-black), 0.6);
+  color: var(--color-terminal-blue);
+  font-size: var(--font-size);
+  left: 50%;
+  opacity: 0;
+  padding: 0.8em 1.2em;
+  pointer-events: none;
+  position: fixed;
+  top: 1em;
+  transform: translate(-50%, -0.5em);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  white-space: pre;
+  z-index: 60;
+}
+
+html.malleable-bar-open .malleable-loader {
+  top: calc(var(--malleable-bar-height, 3.4em) + 1em);
+}
+
+.malleable-loader--visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.malleable-loader__cursor {
+  animation: malleable-cursor 1s steps(1) infinite;
+}
+
+@keyframes malleable-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+
+/* The submit drawer, hanging off the bar. */
+
+.malleable-drawer {
+  background: rgba(var(--rgb-background-storm), 0.97);
+  border-bottom: var(--border-width) solid var(--border-color);
+  display: none;
+  left: 0;
+  padding: 1.25em 1.5em 1.5em;
+  position: fixed;
+  right: 0;
+  top: var(--malleable-bar-height, 3.4em);
+  z-index: 49;
+}
+
+html.malleable-drawer-open .malleable-drawer {
+  display: block;
+}
+
+.malleable-drawer__inner {
+  display: grid;
+  gap: 0.9em;
+  margin-inline: auto;
+  max-width: 46em;
+}
+
+.malleable-drawer__prompt {
+  color: var(--color-terminal-blue);
+}
+
+.malleable-drawer__prompt::before {
+  content: "> ";
+  color: var(--color-green);
+}
+
+.malleable-drawer__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75em;
+}
+
+.malleable-drawer textarea,
+.malleable-drawer input {
+  background: rgba(var(--rgb-background-night), 0.85);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: 0.35em;
+  color: var(--color-terminal-white);
+  flex: 1;
+  font-family: inherit;
+  font-size: 1em;
+  min-width: 12em;
+  padding: 0.7em 0.9em;
+  resize: none;
+}
+
+.malleable-drawer textarea:focus,
+.malleable-drawer input:focus {
+  border-color: var(--color-terminal-cyan);
+  outline: none;
+}
+
+.malleable-drawer__status {
+  color: var(--color-terminal-blue);
+  min-height: 1.4em;
+  white-space: pre-wrap;
+}
+
+.malleable-drawer__status strong {
+  color: var(--color-terminal-cyan);
+}
+
+.malleable-drawer__identity {
+  display: none;
+}
+
+.malleable-drawer--claim .malleable-drawer__identity {
+  display: grid;
+  gap: 0.75em;
+}
+
+.malleable-drawer--claim .malleable-drawer__ask {
+  display: none;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .malleable-bar,
+  .malleable-loader {
+    transition: none;
+  }
+
+}

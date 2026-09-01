@@ -1,0 +1,688 @@
+/* Seed themes for the malleable homepage. Every theme is a re-skin of the
+   exact same markup and copy: variable overrides on html[data-theme], plus a
+   small motif flourish. Nothing here touches content. */
+
+
+/* Cross-fade: while html.malleable-theming is set, color-ish properties ease. */
+
+html.malleable-theming body,
+html.malleable-theming body * {
+  transition:
+    background 0.9s ease,
+    background-color 0.9s ease,
+    border-color 0.9s ease,
+    color 0.9s ease,
+    box-shadow 0.9s ease !important;
+}
+
+
+/* A hook every theme can use to animate the ASCII mark without touching it. */
+
+.pre pre {
+  display: block;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Radiant Baby — for the man who made subway walls dance             */
+/* Chalk lines on subway black; red, yellow, and blue that won't sit  */
+/* still.                                                             */
+
+html[data-theme="radiant-baby"] {
+  --rgb-background-night: 17, 17, 17;
+  --rgb-background-storm: 34, 34, 34;
+  --rgb-terminal-black: 68, 68, 68;
+  --rgb-terminal-blue: 255, 82, 82;
+  --rgb-terminal-cyan: 255, 209, 0;
+  --rgb-terminal-white: 244, 244, 244;
+  --rgb-green: 250, 250, 250;
+  --rgb-turquoise: 82, 145, 255;
+}
+
+html[data-theme="radiant-baby"] .pre pre {
+  animation: radiant-dance 0.9s ease-in-out infinite;
+}
+
+@keyframes radiant-dance {
+  0%, 100% { transform: rotate(-0.6deg); }
+  50% { transform: rotate(0.6deg); }
+}
+
+
+/* ------------------------------------------------------------------ */
+/* City of the Future — a big beautiful tomorrow, now boarding      */
+/* Indigo dusk, monorail teal, one golden sun on the horizon.         */
+
+html[data-theme="city-of-the-future"] {
+  --rgb-background-night: 21, 17, 52;
+  --rgb-background-storm: 39, 32, 84;
+  --rgb-terminal-black: 78, 70, 140;
+  --rgb-terminal-blue: 148, 178, 255;
+  --rgb-terminal-cyan: 72, 219, 200;
+  --rgb-terminal-white: 214, 210, 255;
+  --rgb-green: 255, 176, 66;
+  --rgb-turquoise: 255, 122, 178;
+}
+
+html[data-theme="city-of-the-future"] body {
+  background-image: linear-gradient(
+    to bottom,
+    rgb(21, 17, 52) 52%,
+    rgb(58, 34, 94) 80%,
+    rgb(112, 48, 108) 100%
+  );
+}
+
+html[data-theme="city-of-the-future"] .pre pre {
+  text-shadow: 0 0 1.5em rgb(255 176 66 / 0.55);
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Azteca '86 — the summer the whole world wore stripes               */
+/* Sun-bleached paper, pitch green, broadcast stripes up top.         */
+
+html[data-theme="azteca-86"] {
+  color-scheme: light;
+  --rgb-background-night: 243, 234, 214;
+  --rgb-background-storm: 226, 213, 183;
+  --rgb-terminal-black: 187, 168, 128;
+  --rgb-terminal-blue: 27, 94, 32;
+  --rgb-terminal-cyan: 198, 60, 34;
+  --rgb-terminal-white: 74, 60, 34;
+  --rgb-green: 27, 94, 32;
+  --rgb-turquoise: 230, 150, 0;
+}
+
+html[data-theme="azteca-86"] body::before {
+  background: repeating-linear-gradient(
+    to right,
+    rgb(27, 94, 32) 0 25%,
+    rgb(198, 60, 34) 25% 50%,
+    rgb(230, 150, 0) 50% 75%,
+    rgb(38, 34, 26) 75% 100%
+  );
+  content: "";
+  display: block;
+  height: 0.6em;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Milano '81 — a bookshelf that refused to behave                    */
+/* Gallery white, one loud pink, one louder teal, confetti terrazzo.  */
+
+html[data-theme="milano-81"] {
+  color-scheme: light;
+  --rgb-background-night: 248, 244, 238;
+  --rgb-background-storm: 234, 226, 214;
+  --rgb-terminal-black: 200, 190, 178;
+  --rgb-terminal-blue: 24, 24, 28;
+  --rgb-terminal-cyan: 236, 64, 122;
+  --rgb-terminal-white: 70, 66, 60;
+  --rgb-green: 0, 175, 181;
+  --rgb-turquoise: 255, 196, 0;
+}
+
+html[data-theme="milano-81"] body {
+  background-image:
+    radial-gradient(rgb(236 64 122 / 0.25) 0.17em, transparent 0.18em),
+    radial-gradient(rgb(0 175 181 / 0.25) 0.17em, transparent 0.18em);
+  background-position: 0 0, 1.5em 1.5em;
+  background-size: 3em 3em, 3em 3em;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Player One '85 — blow on the cartridge and try again               */
+/* Console gray, sky blue, cartridge red, scanlines over everything.  */
+
+html[data-theme="player-one-85"] {
+  --rgb-background-night: 16, 16, 16;
+  --rgb-background-storm: 44, 44, 44;
+  --rgb-terminal-black: 84, 84, 84;
+  --rgb-terminal-blue: 60, 188, 252;
+  --rgb-terminal-cyan: 252, 152, 56;
+  --rgb-terminal-white: 216, 216, 216;
+  --rgb-green: 216, 40, 0;
+  --rgb-turquoise: 184, 248, 24;
+}
+
+html[data-theme="player-one-85"] body::after {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.14) 0 1px,
+    transparent 1px 3px
+  );
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: 40;
+}
+
+html[data-theme="player-one-85"] .pre pre {
+  animation: player-one-blink 1.2s steps(1) infinite;
+}
+
+@keyframes player-one-blink {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  96% { opacity: 0.35; }
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Basildon — synth-pop from an Essex new town                        */
+/* Black boxes, brushed silver, a single rose red.                    */
+
+html[data-theme="basildon"] {
+  --rgb-background-night: 10, 10, 12;
+  --rgb-background-storm: 26, 26, 30;
+  --rgb-terminal-black: 56, 56, 62;
+  --rgb-terminal-blue: 201, 201, 208;
+  --rgb-terminal-cyan: 255, 59, 59;
+  --rgb-terminal-white: 201, 201, 208;
+  --rgb-green: 226, 226, 232;
+  --rgb-turquoise: 255, 59, 59;
+}
+
+html[data-theme="basildon"] .pre pre {
+  text-shadow: 0 0 2em rgb(255 59 59 / 0.35);
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Paperclip '85 — a mullet, duct tape, and one good idea             */
+/* Gunmetal, duct-tape silver, safety orange where it counts.        */
+
+html[data-theme="paperclip-85"] {
+  --rgb-background-night: 38, 40, 42;
+  --rgb-background-storm: 55, 58, 60;
+  --rgb-terminal-black: 96, 100, 104;
+  --rgb-terminal-blue: 192, 197, 202;
+  --rgb-terminal-cyan: 255, 111, 0;
+  --rgb-terminal-white: 192, 197, 202;
+  --rgb-green: 255, 111, 0;
+  --rgb-turquoise: 255, 179, 0;
+}
+
+html[data-theme="paperclip-85"] body::before {
+  background: repeating-linear-gradient(
+    -45deg,
+    rgb(255 179 0 / 0.85) 0 1em,
+    rgb(24 24 24 / 0.85) 1em 2em
+  );
+  content: "";
+  display: block;
+  height: 0.4em;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  html[data-theme] .pre pre {
+    animation: none;
+  }
+
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Scenery — each theme's artwork, placed in the gutters behind the   */
+/* content. Injected by bar.js; positioned inline per piece.          */
+
+.malleable-scenery {
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  transition: opacity 0.9s ease;
+  z-index: -1;
+}
+
+.malleable-scenery--in {
+  opacity: 1;
+}
+
+.malleable-scenery .msc {
+  display: block;
+  position: absolute;
+}
+
+.malleable-scenery .msc svg {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+/* The gutters vanish on narrow screens; so does the artwork. */
+@media (max-width: 64em) {
+  .malleable-scenery {
+    display: none;
+  }
+}
+
+.msc--wiggle {
+  animation: msc-wiggle 1s ease-in-out infinite;
+}
+
+.msc--wiggle-late {
+  animation: msc-wiggle 1.1s ease-in-out 0.4s infinite;
+}
+
+@keyframes msc-wiggle {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+
+.msc--pulse {
+  animation: msc-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes msc-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+.msc--bob {
+  animation: msc-bob 3.4s ease-in-out infinite;
+}
+
+.msc--bob-late {
+  animation: msc-bob 3.9s ease-in-out 1.2s infinite;
+}
+
+@keyframes msc-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1.2em); }
+}
+
+.msc--spin-slow {
+  animation: msc-spin 24s linear infinite;
+}
+
+.msc--roll {
+  animation: msc-spin 14s linear infinite;
+}
+
+@keyframes msc-spin {
+  to { transform: rotate(360deg); }
+}
+
+.msc--rise {
+  animation: msc-rise 6s ease-out both;
+}
+
+@keyframes msc-rise {
+  from { transform: translateY(35%); }
+  to { transform: translateY(0); }
+}
+
+.msc--twinkle {
+  animation: msc-twinkle 2.2s ease-in-out infinite;
+}
+
+.msc--twinkle-late {
+  animation: msc-twinkle 2.8s ease-in-out 0.9s infinite;
+}
+
+@keyframes msc-twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+
+.msc--hop {
+  animation: msc-hop 1s steps(2) infinite;
+}
+
+.msc--hop-late {
+  animation: msc-hop 1s steps(2) 0.5s infinite;
+}
+
+@keyframes msc-hop {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-0.5em); }
+}
+
+.msc--sway {
+  animation: msc-sway 4.5s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+
+@keyframes msc-sway {
+  0%, 100% { transform: rotate(-6deg); }
+  50% { transform: rotate(6deg); }
+}
+
+.msc__wave {
+  animation: msc-wave 2.4s linear infinite;
+}
+
+@keyframes msc-wave {
+  to { stroke-dashoffset: -52; }
+}
+
+.msc__vu {
+  animation: msc-vu 0.9s ease-in-out infinite alternate;
+  transform-origin: 50% 100%;
+}
+
+.msc__vu--2 { animation-duration: 0.7s; animation-delay: 0.2s; }
+.msc__vu--3 { animation-duration: 1.1s; animation-delay: 0.1s; }
+.msc__vu--4 { animation-duration: 0.8s; animation-delay: 0.3s; }
+.msc__vu--5 { animation-duration: 1s; animation-delay: 0.15s; }
+
+@keyframes msc-vu {
+  from { transform: scaleY(0.25); }
+  to { transform: scaleY(1); }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .malleable-scenery .msc,
+  .malleable-scenery svg rect,
+  .malleable-scenery svg path {
+    animation: none !important;
+  }
+
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Breadbin '82 — load "*",8,1                                        */
+/* The blue screen with the lighter blue border. You know the one.    */
+
+html[data-theme="breadbin-82"] {
+  --rgb-background-night: 64, 49, 141;
+  --rgb-background-storm: 53, 40, 121;
+  --rgb-terminal-black: 120, 105, 196;
+  --rgb-terminal-blue: 165, 152, 223;
+  --rgb-terminal-cyan: 255, 255, 255;
+  --rgb-terminal-white: 200, 191, 231;
+  --rgb-green: 165, 152, 223;
+  --rgb-turquoise: 255, 255, 255;
+}
+
+/* The whole viewport gets the classic thick border. */
+html[data-theme="breadbin-82"] body::after {
+  border: 1.25em solid #7869c4;
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: 30;
+}
+
+.msc--c64-text {
+  color: #a598df;
+  font-size: var(--font-size-small);
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+.msc__block {
+  animation: msc-blink 1s steps(1) infinite;
+}
+
+@keyframes msc-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Boy Wonder '89 — sixteen, with a stethoscope and a modem           */
+/* A word processor bluer than any hospital corridor.                 */
+
+html[data-theme="boy-wonder-89"] {
+  --rgb-background-night: 0, 0, 160;
+  --rgb-background-storm: 0, 0, 120;
+  --rgb-terminal-black: 85, 85, 255;
+  --rgb-terminal-blue: 255, 255, 255;
+  --rgb-terminal-cyan: 85, 255, 255;
+  --rgb-terminal-white: 226, 226, 255;
+  --rgb-green: 255, 255, 85;
+  --rgb-turquoise: 85, 255, 255;
+}
+
+.msc--dos-cursor {
+  color: #ffffff;
+  font-size: var(--font-size);
+}
+
+.msc__ekg {
+  animation: msc-ekg 4s linear infinite;
+}
+
+@keyframes msc-ekg {
+  to { stroke-dashoffset: -2400; }
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Touch of Grey '87 — the dancing bears went a little gray           */
+/* Gray at first glance; tie-dye seeping through everywhere else.     */
+
+html[data-theme="touch-of-grey-87"] {
+  --rgb-background-night: 42, 42, 46;
+  --rgb-background-storm: 58, 58, 64;
+  --rgb-terminal-black: 100, 100, 108;
+  --rgb-terminal-blue: 202, 202, 208;
+  --rgb-terminal-cyan: 224, 74, 63;
+  --rgb-terminal-white: 210, 210, 216;
+  --rgb-green: 242, 209, 61;
+  --rgb-turquoise: 63, 111, 224;
+}
+
+html[data-theme="touch-of-grey-87"] body {
+  background-image:
+    radial-gradient(at 18% 28%, rgb(224 74 63 / 0.14), transparent 42%),
+    radial-gradient(at 82% 18%, rgb(63 111 224 / 0.14), transparent 42%),
+    radial-gradient(at 62% 82%, rgb(63 166 82 / 0.12), transparent 42%),
+    radial-gradient(at 30% 72%, rgb(242 209 61 / 0.12), transparent 42%);
+  background-attachment: fixed;
+}
+
+
+/* The monorail glide for City of the Future. */
+
+.msc--glide {
+  animation: msc-glide 16s linear infinite;
+}
+
+@keyframes msc-glide {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(100vw); }
+}
+
+
+/* Louder still: the chalk frame for Radiant Baby, and Doogie's typing. */
+
+html[data-theme="radiant-baby"] body::after {
+  border: 0.45em solid #fafafa;
+  content: "";
+  inset: 0.5em;
+  pointer-events: none;
+  position: fixed;
+  z-index: 30;
+}
+
+.msc--dos-typing {
+  animation: msc-type 7s steps(36) infinite;
+  max-width: 26em;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@keyframes msc-type {
+  0% { width: 0; }
+  70%, 100% { width: 26em; }
+}
+
+
+/* ------------------------------------------------------------------ */
+/* On Belay '88 — the baby stuck the landing                          */
+/* Catalog sky, desert rock, one legendary toss.                      */
+
+html[data-theme="on-belay-88"] {
+  color-scheme: light;
+  --rgb-background-night: 168, 205, 232;
+  --rgb-background-storm: 146, 185, 215;
+  --rgb-terminal-black: 110, 140, 165;
+  --rgb-terminal-blue: 20, 45, 90;
+  --rgb-terminal-cyan: 205, 30, 100;
+  --rgb-terminal-white: 30, 50, 80;
+  --rgb-green: 210, 40, 60;
+  --rgb-turquoise: 0, 140, 130;
+}
+
+html[data-theme="on-belay-88"] body {
+  background-image: linear-gradient(
+    to bottom,
+    rgb(168, 205, 232) 0%,
+    rgb(168, 205, 232) 74%,
+    rgb(217, 185, 140) 100%
+  );
+  background-attachment: fixed;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Hot Dog '84 — last one down buys the cocoa                         */
+/* Fresh corduroy, neon jumpsuit, sunglasses required.                */
+
+html[data-theme="hot-dog-84"] {
+  color-scheme: light;
+  --rgb-background-night: 220, 236, 247;
+  --rgb-background-storm: 198, 220, 238;
+  --rgb-terminal-black: 150, 180, 205;
+  --rgb-terminal-blue: 74, 26, 122;
+  --rgb-terminal-cyan: 255, 45, 149;
+  --rgb-terminal-white: 60, 40, 90;
+  --rgb-green: 0, 173, 196;
+  --rgb-turquoise: 242, 178, 20;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Castle Rock '86 — four friends walking the tracks                  */
+/* A dusk you walk into, all the way to the horizon.                  */
+
+html[data-theme="castle-rock-86"] {
+  --rgb-background-night: 44, 32, 40;
+  --rgb-background-storm: 62, 46, 54;
+  --rgb-terminal-black: 110, 85, 75;
+  --rgb-terminal-blue: 235, 210, 175;
+  --rgb-terminal-cyan: 255, 140, 66;
+  --rgb-terminal-white: 235, 210, 175;
+  --rgb-green: 255, 183, 77;
+  --rgb-turquoise: 255, 222, 173;
+}
+
+html[data-theme="castle-rock-86"] body {
+  background-image: linear-gradient(
+    to bottom,
+    rgb(44, 32, 40) 0%,
+    rgb(74, 44, 52) 58%,
+    rgb(160, 82, 45) 86%,
+    rgb(224, 128, 60) 100%
+  );
+  background-attachment: fixed;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Nantahala '83 — the five-year-old rides amidships                  */
+/* Forest dark, river teal, PFD orange where it matters.              */
+
+html[data-theme="nantahala-83"] {
+  --rgb-background-night: 22, 52, 58;
+  --rgb-background-storm: 34, 68, 74;
+  --rgb-terminal-black: 74, 116, 122;
+  --rgb-terminal-blue: 188, 224, 228;
+  --rgb-terminal-cyan: 255, 127, 42;
+  --rgb-terminal-white: 206, 236, 238;
+  --rgb-green: 226, 246, 244;
+  --rgb-turquoise: 255, 179, 0;
+}
+
+html[data-theme="nantahala-83"] body {
+  background-image: linear-gradient(
+    to bottom,
+    rgb(22, 52, 58) 0%,
+    rgb(32, 74, 82) 55%,
+    rgb(42, 106, 116) 100%
+  );
+  background-attachment: fixed;
+}
+
+
+/* The canoe paddles across the page, rocking as it goes. */
+
+.msc--paddle {
+  animation: msc-paddle 30s linear infinite;
+}
+
+.msc--paddle svg {
+  animation: msc-rock 2.6s ease-in-out infinite;
+}
+
+@keyframes msc-paddle {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(100vw); }
+}
+
+@keyframes msc-rock {
+  0%, 100% { transform: rotate(-2.5deg) translateY(0); }
+  50% { transform: rotate(2.5deg) translateY(-0.4em); }
+}
+
+
+/* The Castle Rock chase crosses the trestle, and the skier runs the hill. */
+
+.msc--chase {
+  animation: msc-chase 16s linear infinite;
+}
+
+.msc--chase svg {
+  animation: msc-rock 0.5s ease-in-out infinite;
+}
+
+@keyframes msc-chase {
+  from { transform: translateX(100vw); }
+  to { transform: translateX(-130%); }
+}
+
+.msc--ski-run {
+  animation: msc-ski-run 12s linear infinite;
+}
+
+@keyframes msc-ski-run {
+  0% { transform: translate(12vw, -14vh); opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { transform: translate(-72vw, 26vh); opacity: 0; }
+}
+
+
+/* MacGyver's jeep bounces across the page on a dirt road only he can see. */
+
+.msc--drive {
+  animation: msc-drive 13s linear infinite;
+}
+
+.msc--drive svg {
+  animation: msc-bump 0.35s ease-in-out infinite;
+}
+
+@keyframes msc-drive {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(100vw); }
+}
+
+@keyframes msc-bump {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-0.18em); }
+}

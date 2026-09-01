@@ -1,0 +1,63 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <script>document.documentElement.classList.add('wte-home');</script>
+    <title>Omarchy — Beautiful, Fun &amp; Agentic Linux by DHH</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <meta name="description" content="Beautiful, Fun &amp; Agentic Linux by DHH">
+
+    <meta property="og:site_name" content="Omarchy">
+    <meta property="og:title" content="Omarchy">
+    <meta property="og:description" content="Beautiful, Fun &amp; Agentic Linux by DHH">
+    <meta property="og:image" content="https://omarchy.org/site/images/opengraph.png">
+    <meta property="og:url" content="https://omarchy.org">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:title" content="Omarchy">
+    <meta name="twitter:description" content="Beautiful, Fun &amp; Agentic Linux by DHH">
+    <meta name="twitter:image" content="https://omarchy.org/site/images/opengraph.png">
+    <meta name="twitter:image:alt" content="Omarchy">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="/site/images/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/site/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/site/css/root.css">
+    <link rel="stylesheet" type="text/css" href="/site/css/fonts.css">
+    <link rel="stylesheet" type="text/css" href="/site/css/elements.css">
+    <link rel="stylesheet" type="text/css" href="/site/css/button.css">
+    <link rel="stylesheet" type="text/css" href="/site/css/footer.css">
+    <link rel="stylesheet" type="text/css" href="/site/css/header.css">
+    <link rel="stylesheet" type="text/css" href="/site/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/site/css/nav.css">
+    <link rel="stylesheet" type="text/css" href="/site/css/notification.css">
+    <link rel="stylesheet" type="text/css" href="/site/css/pre.css">
+    <link rel="stylesheet" type="text/css" href="/site/css/video.css">
+    <link rel="stylesheet" type="text/css" href="/site/css/workstations.css">
+
+    <link rel="stylesheet" type="text/css" href="/site/malleable/themes.css">
+    <link rel="stylesheet" type="text/css" href="/site/malleable/bar.css">
+
+    <script src="/site/js/script.js" type="module"></script>
+    <script src="/site/malleable/bar.js" type="module"></script>
+    <%= csrf_meta_tags %>
+    <script type="application/json" id="malleable-data"><%= raw json_escape(@malleable_data.to_json) %></script>
+  </head>
+
+  <body>
+<%= render "homepage/notification" %>
+
+<%= render "homepage/logo" %>
+
+<%= render "homepage/header" %>
+
+<%= render "homepage/nav" %>
+
+<%= render "homepage/main" %>
+
+<%= render "homepage/footer" %>
+  </body>
+</html>

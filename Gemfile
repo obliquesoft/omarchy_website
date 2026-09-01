@@ -66,3 +66,5 @@ group :test do
 end
 
 gem "anthropic", "~> 1.68"
+
+gem "minitest-mock", "~> 5.27", group: :test
