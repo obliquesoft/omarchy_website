@@ -65,6 +65,6 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "anthropic", "~> 1.68"
+gem "anthropic", "~> 1.78"
 
 gem "minitest-mock", "~> 5.27", group: :test
